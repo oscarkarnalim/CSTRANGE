@@ -15,7 +15,25 @@ This refers to a directory containing student submissions as program files, sub-
 ### Submission type
 Single file: each submission is represented with either a program file or a sub-directory with one program file.  
 Multiple files in a directory: each submission is represented with a sub-directory containing multiple files. All files will be concatenated prior comparison.  
+Multiple files in a zip: each submission is represented with a zip. The zio will be unzipped and all of its files will be concatenated prior comparison.  
 
+### Submission language
+The language of the submissions. All USTRANGE features work on Java and Python. Other languages are only supported by JPlag (pseudo-semantic similarity).
 
+### Explanation language
+The language of similarity explanation. This is STRANGE's core feature to help instructors or higher officials understand the reported similarities. The oprions are English and Indonesian.
 
+### Minimum similarity threshold
+The minimum percentage of similarity for a program pair to be reported. The value is from 0 to 100 inclusive. The threshold will be applied to the highest level of similarity. For example, type III will be selected if all types of similarities are considered. Type II will be selected if only type I and type II similarities are considered.
 
+### Minimum matching length
+It defines how many similar tokens ('words') are required for a code segment to be reported. Larger value will mitigate the occurrence of coincidental similarity, but it will make the tool less resilient to program disguises.
+
+### Template directory path
+This refers to a directory containing tenplate code stored as program files. The tool will try to remove all template code in student submissions prior comparison.
+
+### Common code
+If this feature is turned on, the tool will try to remove all similar code segments that are common among student submissions. This might result in longer processing time.
+
+### Reported similarities
+The instructor can select reported types of similarity. If the submission language is other than Java and Python, only JPlag should be selected.
