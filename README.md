@@ -6,6 +6,6 @@ Unlike many existing tools, USTRANGE is applicable for any assessments, even the
 
 USTRANGE is an expanded version of STRANGE by incorporating three types of similarity, optimising the comparison algorithm, and adding an user interface. Further details about STRANGE can be seen in [the corresponding paper](https://doi.org/10.1109/ACCESS.2021.3073703) published in IEEE Access. USTRANGE can exclude template code and common code. Template code removal is adapted from STRANGE while common code removal is adapted from [Common Code Segment Selector](https://github.com/oscarkarnalim/c2s2).
 
-Currently, the tool supports Java and Python submissions. The tool can also act as a simple user interface for JPlag, allowing four more acceptable languages of submissions: C, C++, C#, and Text.
+Currently, the tool supports Java and Python submissions. The tool can also act as a simple user interface for JPlag, allowing five more acceptable languages of submissions: C, C++, C#, and Text.
 
 
