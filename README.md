@@ -24,7 +24,7 @@ The language of the submissions. All USTRANGE features work on Java and Python. 
 The language of similarity explanation. This is STRANGE's core feature to help instructors or higher officials understand the reported similarities. The options are English and Indonesian.
 
 ### Minimum similarity threshold
-The minimum percentage of similarity for a program pair to be reported. The value is from 0 to 100 inclusive. The threshold will be applied to the highest level of similarity. For example, type III will be selected if all types of similarities are considered. Type II will be selected if only type I and type II similarities are considered.
+The minimum percentage of similarity for a program pair to be reported. The value is from 0 to 100 inclusive. The threshold will be applied to the deepest level of similarity. For example, type III will be selected if all types of similarities are considered. Type II will be selected if only type I and type II similarities are considered.
 
 ### Minimum matching length
 It defines how many similar tokens ('words') are required for a code segment to be reported. Larger value will mitigate the occurrence of coincidental similarity, but it will make the tool less resilient to program disguises.
@@ -51,7 +51,7 @@ USTRANGE diekspansi dari STRANGE dengan memperhitungkan tiga tipe kesamaan, meng
 Pada saat ini, kakas menerima tugas pemrograman dalam bahasa Java dan Python. Kakas ini juga dapat berperan sebagai antarmuka sederhana untuk JPlag, memungkinkan lima bahasa tambahan untuk tugas: C, C++, C#, and Text.
 
 ## Masukan 
-### Assignment path (path tugas)
+### Assignment path (lokasi tugas)
 Ini mengarah pada sebuah direktori berisi kumpulan tugas siswa dalam bentuk file kode program, sub-direktori, atau file zip.
 
 ### Submission type (jenis tugas yang dikumpulkan)
@@ -65,17 +65,17 @@ Bahasa dari tugas siswa yang dikumpulkan. Semua fitur USTRANGE berfungsi untuk J
 ### Explanation language (bahasa penjelasan)
 Bahasa dari penjelasan kesamaan. Ini adalah fitur utama dari STRANGE untuk membantu instruktur atau pejabat institusi yang lebih tinggi untuk mengerti kesamaan yang dilaporkan. Pilihan yang ada adalah Inggris dan Indonesia.  
 
-### Minimum similarity threshold
-The minimum percentage of similarity for a program pair to be reported. The value is from 0 to 100 inclusive. The threshold will be applied to the highest level of similarity. For example, type III will be selected if all types of similarities are considered. Type II will be selected if only type I and type II similarities are considered.
+### Minimum similarity threshold (batas kesamaan minimum)
+Persentasi minimum dari kesamaan sebuah program agar dilaporkan. Nilainya diantara 0 hingga 100 secara inklusif. Batas ini akan diterapkan pada level kesamaan terdalam. Sebagai contoh, tipe III akan dipilih jika semua tipe kesamaan dipertimbangkan. Tipe II akan dipilih jika hanya tipe I dan tipe II yang dipertimbangkan.  
 
-### Minimum matching length
-It defines how many similar tokens ('words') are required for a code segment to be reported. Larger value will mitigate the occurrence of coincidental similarity, but it will make the tool less resilient to program disguises.
+### Minimum matching length (panjang kesamaan minimum)
+Ini menentukan seberapa banyak token ('kata') yang dibutuhkan agar sebuah segmen kode dilaporkan. Nilai yang lebih besar akan mengurangi kemunculan kesamaan tidak disengaja, namun akan membuat kakas semakin rentan dengan penyamaran program.
 
-### Template directory path
-This refers to a directory containing tenplate code stored as program files. The tool will try to remove all template code in student submissions prior comparison.
+### Template directory path (lokasi direktori template)
+Ini mengarah pada lokasi direktori berisi kode template yang disimpan dalam file-file kode program. Kakas akan mencoba untuk membuang semua kode template dari tugas-tugas siswa sebelum dibandingkan satu sama lain.
 
-### Common code
-If this feature is turned on, the tool will try to remove all similar code segments that are common among student submissions. This might result in longer processing time.
+### Common code (pertimbangan kode umum)
+Jika fitur ini diaktifkan, kakas akan mencoba untuk membuang semua segmen kode sama yang umum ditemukan di tugas-tugas siswa. Ini mungkin akan menyebabkan waktu proses yang lebih lama.
 
-### Reported similarities
-The instructor can select reported types of similarity. If the submission language is other than Java and Python, only JPlag should be selected.
+### Reported similarities (kesamaan-kesamaan yang dilaporkan)
+Instruktur dapat memilih tipe kesamaan mana saja yang perlu dilaporkan. Jika bahasa tugas selain Java dan Python, maka hanya kesamaan JPlag yang bisa dipilih.
