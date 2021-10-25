@@ -8,6 +8,8 @@ USTRANGE expands STRANGE by incorporating three types of similarity, optimising 
 
 Currently, the tool supports Java and Python submissions. The tool can also act as a simple user interface for JPlag, allowing five more acceptable languages of submissions: C, C++, C#, and Text.
 
+**Note :** As JPlag used in this tool is not specifically designed as a third-party library, USTRANGE might stop working if JPlag recognises less than two submissions or the minimum matching length is too large. If that happens, please ensure that there are at least two submissions and/or lower the minimum matching length.
+
 ## Input 
 ### Assignment path
 This refers to a directory containing student submissions as program files, sub-directories or zip files.
@@ -49,6 +51,8 @@ Berbeda dengan kakas-kakas lainnya, USTRANGE dapat digunakan untuk tugas pemrogr
 USTRANGE diekspansi dari STRANGE dengan memperhitungkan tiga tipe kesamaan, mengoptimasi algoritma perbandingan, dan menambahkan antarmuka pengguna. USTRANGE dapat mengabaikan kode template dan kode umum. Kode template diabaikan dengan teknik yang diadaptasi dari STRANGE sedangkan kode umum diabaikan dengan teknik yang diadaptasi dari [Common Code Segment Selector](https://github.com/oscarkarnalim/c2s2) yang dipublikasikan di [52nd ACM Technical Symposium on Computer Science Education (SIGCSE 2021)](https://dl.acm.org/doi/10.1145/3408877.3432436).
 
 Pada saat ini, kakas menerima tugas pemrograman dalam bahasa Java dan Python. Kakas ini juga dapat berperan sebagai antarmuka sederhana untuk JPlag, memungkinkan lima bahasa tambahan untuk tugas: C, C++, C#, and Text.
+
+**Note :** Mengingat JPlag yang digunakan pada kakas ini tidak didesain khusus sebagai library pihak ketiga, USTRANGE bisa berhenti berjalan jika JPlag tidak berhasil mengenali dua atau lebih tugas siswa atau minimum matching length nya terlalu besar. Jika itu terjadi, mohon pastikan bahwa paling tidak ada dua tugas siswa dan/atau menurunkan nilai minimum matching length.
 
 ## Masukan 
 ### Assignment path (lokasi tugas)
