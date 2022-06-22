@@ -7,17 +7,17 @@
 ## User Interface
 ### Main Layout
 <p align="center">
-<img width="80%" src="https://github.com/oscarkarnalim/CSTRANGE/blob/main/UI_01?raw=true">
+<img width="60%" src="https://github.com/oscarkarnalim/CSTRANGE/blob/main/UI_01.png?raw=true">
 </p>
 
 ### Investigation report
 <p align="center">
-<img width="80%" src="https://github.com/oscarkarnalim/CSTRANGE/blob/main/UI_02?raw=true">
+<img width="80%" src="https://github.com/oscarkarnalim/CSTRANGE/blob/main/UI_02.png?raw=true">
 </p>
 
 ### Comparison report
 <p align="center">
-<img width="80%" src="https://github.com/oscarkarnalim/CSTRANGE/blob/main/UI_03?raw=true">
+<img width="80%" src="https://github.com/oscarkarnalim/CSTRANGE/blob/main/UI_03.png?raw=true">
 </p>
 
 ## More about CSTRANGE
