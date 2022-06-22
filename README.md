@@ -13,19 +13,19 @@ CSTRANGE expands STRANGE by incorporating three types of similarity, optimising 
 Currently, the tool supports Java and Python submissions. The tool can also act as a simple user interface for JPlag, allowing five more acceptable languages of submissions: C, C++, C#, and Text.
 
 ## User Interface
-### Main Layout
+### Main layout
 <p align="center">
 <img width="40%" src="https://github.com/oscarkarnalim/CSTRANGE/blob/main/UI_01.png?raw=true">
 </p>
 
 ### Investigation report
 <p align="center">
-<img width="60%" src="https://github.com/oscarkarnalim/CSTRANGE/blob/main/UI_02.png?raw=true">
+<img width="80%" src="https://github.com/oscarkarnalim/CSTRANGE/blob/main/UI_02.png?raw=true">
 </p>
 
 ### Comparison report
 <p align="center">
-<img width="60%" src="https://github.com/oscarkarnalim/CSTRANGE/blob/main/UI_03.png?raw=true">
+<img width="80%" src="https://github.com/oscarkarnalim/CSTRANGE/blob/main/UI_03.png?raw=true">
 </p>
 
 ## Input 
