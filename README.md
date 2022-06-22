@@ -15,17 +15,17 @@ Currently, the tool supports Java and Python submissions. The tool can also act 
 ## User Interface
 ### Main Layout
 <p align="center">
-<img width="60%" src="https://github.com/oscarkarnalim/CSTRANGE/blob/main/UI_01.png?raw=true">
+<img width="40%" src="https://github.com/oscarkarnalim/CSTRANGE/blob/main/UI_01.png?raw=true">
 </p>
 
 ### Investigation report
 <p align="center">
-<img width="80%" src="https://github.com/oscarkarnalim/CSTRANGE/blob/main/UI_02.png?raw=true">
+<img width="60%" src="https://github.com/oscarkarnalim/CSTRANGE/blob/main/UI_02.png?raw=true">
 </p>
 
 ### Comparison report
 <p align="center">
-<img width="80%" src="https://github.com/oscarkarnalim/CSTRANGE/blob/main/UI_03.png?raw=true">
+<img width="60%" src="https://github.com/oscarkarnalim/CSTRANGE/blob/main/UI_03.png?raw=true">
 </p>
 
 ## Input 
