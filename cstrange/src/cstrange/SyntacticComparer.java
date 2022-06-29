@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import jdk.internal.misc.FileSystemOption;
 import p3.feedbackgenerator.comparison.Comparer;
 import p3.feedbackgenerator.language.java.JavaFeedbackGenerator;
 import p3.feedbackgenerator.language.java.JavaHtmlGenerator;
@@ -14,9 +15,9 @@ import support.AdditionalKeywordsManager;
 
 public class SyntacticComparer {
 	public static void doSyntacticComparison(String assignmentPath, String progLang, String humanLang, int simThreshold,
-			int minMatchingLength, String templateDirPath, boolean isSurfaceSimReported, File assignmentFile,
-			String assignmentParentDirPath, String assignmentName, boolean isMultipleFiles, boolean isCommonCodeAllowed,
-			String additionalKeywordsPath, ArrayList<File> filesToBeDeleted) {
+			int minMatchingLength, int maxPairs, String templateDirPath, boolean isSurfaceSimReported,
+			File assignmentFile, String assignmentParentDirPath, String assignmentName, boolean isMultipleFiles,
+			boolean isCommonCodeAllowed, String additionalKeywordsPath, ArrayList<File> filesToBeDeleted) {
 
 		// if multiple files, merge them
 		if (isMultipleFiles) {
@@ -40,13 +41,13 @@ public class SyntacticComparer {
 
 		// generate STRANGE reports
 		generateSTRANGEHTMLReports(assignmentPath, resultPath, progLang, humanLang, simThreshold, minMatchingLength,
-				humanLang, additionalKeywords, isSurfaceSimReported);
+				maxPairs, humanLang, additionalKeywords, isSurfaceSimReported);
 
 	}
 
 	private static void generateSTRANGEHTMLReports(String dirPath, String resultPath, String progLang, String humanLang,
-			int simThreshold, int minMatchLength, String languageCode, ArrayList<ArrayList<String>> additionalKeywords,
-			boolean isSurface) {
+			int simThreshold, int minMatchLength, int maxPairs, String languageCode,
+			ArrayList<ArrayList<String>> additionalKeywords, boolean isSurface) {
 		try {
 			// create the output dir
 			File resultDir = new File(resultPath);
@@ -57,15 +58,35 @@ public class SyntacticComparer {
 
 			// start processing
 			File[] assignments = (new File(dirPath)).listFiles();
+
+			ArrayList<ArrayList<FeedbackToken>> tokenStringsSyntactic = new ArrayList<ArrayList<FeedbackToken>>();
+
+			for (int i = 0; i < assignments.length; i++) {
+				File code = Comparer.getCode(assignments[i], progLang);
+				// add empty lists if null
+				if (code == null) {
+					tokenStringsSyntactic.add(new ArrayList<FeedbackToken>());
+				} else {
+					// generate token string
+					ArrayList<FeedbackToken> tokenString = STRANGEPairGenerator.getTokenString(code.getAbsolutePath(),
+							progLang);
+					// generalise
+					if (progLang.equals("java")) {
+						tokenString = JavaFeedbackGenerator.syntaxTokenStringPreprocessing(tokenString,
+								additionalKeywords, true);
+					} else if (progLang.equals("py")) {
+						PythonFeedbackGenerator.syntaxTokenStringPreprocessing(tokenString, additionalKeywords);
+					}
+					// add
+					tokenStringsSyntactic.add(tokenString);
+				}
+			}
+
 			for (int i = 0; i < assignments.length; i++) {
 				// for each code 1
 
 				String dirname1 = assignments[i].getName();
 				File code1 = Comparer.getCode(assignments[i], progLang);
-
-				// skip if null
-				if (code1 == null)
-					continue;
 
 				for (int j = i + 1; j < assignments.length; j++) {
 					// pair code 1 with code 2
@@ -73,104 +94,98 @@ public class SyntacticComparer {
 					String dirname2 = assignments[j].getName();
 					File code2 = Comparer.getCode(assignments[j], progLang);
 
-					// skip if null
-					if (code2 == null)
-						continue;
-
-					// calculating for syntactic and surface if needed
-					int syntacticSimDegree = -1;
-					int surfaceSimDegree = -1;
-					// generate token string
-					ArrayList<FeedbackToken> tokenString1 = STRANGEPairGenerator.getTokenString(code1.getAbsolutePath(),
-							progLang);
-					ArrayList<FeedbackToken> tokenString2 = STRANGEPairGenerator.getTokenString(code2.getAbsolutePath(),
-							progLang);
-
-					// calculate surface sim
-					if (isSurface)
-						surfaceSimDegree = STRANGEPairGenerator.getSTRANGESim(tokenString1, tokenString2,
-								minMatchLength);
-
-					// calculate syntactic sim
-					if (progLang.equals("java")) {
-						tokenString1 = JavaFeedbackGenerator.syntaxTokenStringPreprocessing(tokenString1,
-								additionalKeywords, true);
-						tokenString2 = JavaFeedbackGenerator.syntaxTokenStringPreprocessing(tokenString2,
-								additionalKeywords, true);
-					} else if (progLang.equals("py")) {
-						PythonFeedbackGenerator.syntaxTokenStringPreprocessing(tokenString1, additionalKeywords);
-						PythonFeedbackGenerator.syntaxTokenStringPreprocessing(tokenString2, additionalKeywords);
-					}
-					syntacticSimDegree = STRANGEPairGenerator.getSTRANGESim(tokenString1, tokenString2, minMatchLength);
+					// calculating for syntactic
+					int syntacticSimDegree = STRANGEPairGenerator.getSTRANGESim(tokenStringsSyntactic.get(i),
+							tokenStringsSyntactic.get(j), minMatchLength);
 
 					if (syntacticSimDegree >= simThreshold) {
-						// html filepath for STRANGE
-						String syntacticFileName = "obs" + i + "-" + j + ".syntax.html";
-						String surfaceFileName = "obs" + i + "-" + j + ".surface.html";
-						String embeddedSimTagsForSyntactic = "";
-						String embeddedSimTagsForSurface = "";
-
-						// generate the embedded sim tags for syntactic
-						embeddedSimTagsForSyntactic = embeddedSimTagsForSyntactic + "				<a href=\""
-								+ syntacticFileName + "\" class=\"embedbutton embedactive\">\r\n"
-								+ "					Syntactic sim (" + syntacticSimDegree + "%) \r\n"
-								+ "				</a>\r\n";
-						embeddedSimTagsForSurface = embeddedSimTagsForSurface + "				<a href=\""
-								+ syntacticFileName + "\" class=\"embedbutton\">\r\n"
-								+ "					Syntactic sim (" + syntacticSimDegree + "%) \r\n"
-								+ "				</a>\r\n";
-
-						// generate the embedded sim tags for surface
-						if (isSurface) {
-							embeddedSimTagsForSyntactic = embeddedSimTagsForSyntactic + "				<a href=\""
-									+ surfaceFileName + "\" class=\"embedbutton\">\r\n"
-									+ "					Surface sim (" + surfaceSimDegree + "%) \r\n"
-									+ "				</a>";
-
-							embeddedSimTagsForSurface = embeddedSimTagsForSurface + "				<a href=\""
-									+ surfaceFileName + "\" class=\"embedbutton embedactive\">\r\n"
-									+ "					Surface sim (" + surfaceSimDegree + "%) \r\n"
-									+ "				</a>";
-						}
-
-						// generate STRANGE observation pages
-						// for syntactic
-						if (progLang.equals("java")) {
-							JavaHtmlGenerator.generateHtmlForCSTRANGE(code1.getAbsolutePath(), code2.getAbsolutePath(),
-									dirname1, dirname2, embeddedSimTagsForSyntactic, MainFrame.pairTemplatePath,
-									resultPath + File.separator + syntacticFileName, minMatchLength, humanLang, "",
-									additionalKeywords, true);
-						} else if (progLang.equals("py")) {
-							PythonHtmlGenerator.generateHtmlForCSTRANGE(code1.getAbsolutePath(),
-									code2.getAbsolutePath(), dirname1, dirname2, embeddedSimTagsForSyntactic,
-									MainFrame.pairTemplatePath, resultPath + File.separator + syntacticFileName,
-									minMatchLength, humanLang, "", additionalKeywords, true);
-						}
-
-						// for surface
-						if (isSurface) {
-							if (progLang.equals("java")) {
-								JavaHtmlGenerator.generateHtmlForCSTRANGE(code1.getAbsolutePath(),
-										code2.getAbsolutePath(), dirname1, dirname2, embeddedSimTagsForSurface,
-										MainFrame.pairTemplatePath, resultPath + File.separator + surfaceFileName,
-										minMatchLength, humanLang, "", additionalKeywords, false);
-							} else if (progLang.equals("py")) {
-								PythonHtmlGenerator.generateHtmlForCSTRANGE(code1.getAbsolutePath(),
-										code2.getAbsolutePath(), dirname1, dirname2, embeddedSimTagsForSurface,
-										MainFrame.pairTemplatePath, resultPath + File.separator + surfaceFileName,
-										minMatchLength, humanLang, "", additionalKeywords, false);
-							}
-						}
-
 						// add the comparison pair
-						codePairs.add(new ExpandedComparisonPairTuple("", "", dirname1, dirname2,
-								new double[] { -1, syntacticSimDegree, surfaceSimDegree },
-								new String[] { "", syntacticFileName, surfaceFileName }, syntacticSimDegree));
+						codePairs.add(new ExpandedComparisonPairTuple(code1.getAbsolutePath(), code2.getAbsolutePath(),
+								dirname1, dirname2, new double[] { -1, syntacticSimDegree, -1 }, new String[] {},
+								syntacticSimDegree));
 					}
 				}
 			}
 			// sort in descending order based on average syntax
 			Collections.sort(codePairs);
+
+			// remove extra pairs
+			while (codePairs.size() > maxPairs) {
+				codePairs.remove(codePairs.size() - 1);
+			}
+
+			// generate the similarity report
+			for (int i = 0; i < codePairs.size(); i++) {
+				// get the comparison pair tuple
+				ExpandedComparisonPairTuple ecpt = codePairs.get(i);
+
+				// html filepath for STRANGE
+				String syntacticFileName = "obs" + i + ".syntax.html";
+				String surfaceFileName = "obs" + i + ".surface.html";
+				String embeddedSimTagsForSyntactic = "";
+				String embeddedSimTagsForSurface = "";
+
+				// generate the embedded sim tags for syntactic
+				embeddedSimTagsForSyntactic = embeddedSimTagsForSyntactic + "				<a href=\""
+						+ syntacticFileName + "\" class=\"embedbutton embedactive\">\r\n"
+						+ "					Syntactic sim (" + ecpt.getSimResults()[1] + "%) \r\n"
+						+ "				</a>\r\n";
+				embeddedSimTagsForSurface = embeddedSimTagsForSurface + "				<a href=\"" + syntacticFileName
+						+ "\" class=\"embedbutton\">\r\n" + "					Syntactic sim ("
+						+ ecpt.getSimResults()[1] + "%) \r\n" + "				</a>\r\n";
+
+				if (isSurface) {
+					// calculate surface sim
+					System.out.println("HAHAHAHA");
+					// generate token string
+					ArrayList<FeedbackToken> tokenString1 = STRANGEPairGenerator.getTokenString(ecpt.getCodePath1(),
+							progLang);
+					ArrayList<FeedbackToken> tokenString2 = STRANGEPairGenerator.getTokenString(ecpt.getCodePath2(),
+							progLang);
+					// calculate surface sim
+					ecpt.getSimResults()[2] = STRANGEPairGenerator.getSTRANGESim(tokenString1, tokenString2,
+							minMatchLength);
+
+					// generate the embedded sim tags for surface
+					embeddedSimTagsForSyntactic = embeddedSimTagsForSyntactic + "				<a href=\""
+							+ surfaceFileName + "\" class=\"embedbutton\">\r\n" + "					Surface sim ("
+							+ ecpt.getSimResults()[2] + "%) \r\n" + "				</a>";
+
+					embeddedSimTagsForSurface = embeddedSimTagsForSurface + "				<a href=\""
+							+ surfaceFileName + "\" class=\"embedbutton embedactive\">\r\n"
+							+ "					Surface sim (" + ecpt.getSimResults()[2] + "%) \r\n"
+							+ "				</a>";
+
+					if (progLang.equals("java")) {
+						JavaHtmlGenerator.generateHtmlForCSTRANGE(ecpt.getCodePath1(), ecpt.getCodePath2(),
+								ecpt.getAssignmentName1(), ecpt.getAssignmentName2(), embeddedSimTagsForSurface,
+								MainFrame.pairTemplatePath, resultPath + File.separator + surfaceFileName,
+								minMatchLength, humanLang, "", additionalKeywords, false);
+					} else if (progLang.equals("py")) {
+						PythonHtmlGenerator.generateHtmlForCSTRANGE(ecpt.getCodePath1(), ecpt.getCodePath2(),
+								ecpt.getAssignmentName1(), ecpt.getAssignmentName2(), embeddedSimTagsForSurface,
+								MainFrame.pairTemplatePath, resultPath + File.separator + surfaceFileName,
+								minMatchLength, humanLang, "", additionalKeywords, false);
+					}
+				}
+
+				// generate STRANGE observation pages. Should be here as we need to generate
+				// html path for surface
+				if (progLang.equals("java")) {
+					JavaHtmlGenerator.generateHtmlForCSTRANGE(ecpt.getCodePath1(), ecpt.getCodePath2(),
+							ecpt.getAssignmentName1(), ecpt.getAssignmentName2(), embeddedSimTagsForSyntactic,
+							MainFrame.pairTemplatePath, resultPath + File.separator + syntacticFileName, minMatchLength,
+							humanLang, "", additionalKeywords, true);
+				} else if (progLang.equals("py")) {
+					PythonHtmlGenerator.generateHtmlForCSTRANGE(ecpt.getCodePath1(), ecpt.getCodePath2(),
+							ecpt.getAssignmentName1(), ecpt.getAssignmentName2(), embeddedSimTagsForSyntactic,
+							MainFrame.pairTemplatePath, resultPath + File.separator + syntacticFileName, minMatchLength,
+							humanLang, "", additionalKeywords, true);
+				}
+
+				// set html paths
+				ecpt.setHtmlPaths(new String[] { "", syntacticFileName, surfaceFileName });
+			}
 
 			// generate the index HTML
 			IndexHTMLGenerator.generateHtml(dirPath, codePairs, MainFrame.indexTemplatePath, resultPath, simThreshold,

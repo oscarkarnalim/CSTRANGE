@@ -463,16 +463,13 @@ public class MainFrame extends JFrame {
 
 		ArrayList<File> filesToBeDeleted = new ArrayList<File>();
 
-		// This code silences all warning messages due to incompatible token types and
-		// unexpected ANTLR versioning issue. However, this does not harm the result of
-		// the tool
-		PrintStream originalStream = System.err;
-		PrintStream dummyStream = new PrintStream(new OutputStream() {
-			public void write(int b) {
-				// NO-OP
-			}
-		});
-		System.setErr(dummyStream);
+//		PrintStream originalStream = System.err;
+//		PrintStream dummyStream = new PrintStream(new OutputStream() {
+//			public void write(int b) {
+//				// NO-OP
+//			}
+//		});
+//		System.setErr(dummyStream);
 
 		File assignmentFile = new File(assignmentPath);
 		String assignmentParentDirPath = assignmentFile.getParentFile().getAbsolutePath();
@@ -523,11 +520,11 @@ public class MainFrame extends JFrame {
 		} else if (isSyntacticSimReported)
 			// otherwise, if syntactic comparison is checked, use it as the main measurement
 			SyntacticComparer.doSyntacticComparison(assignmentPath, progLang, humanLang, simThreshold,
-					minMatchingLength, templateDirPath, isSurfaceSimReported, assignmentFile, assignmentParentDirPath,
+					minMatchingLength, maxPairs, templateDirPath, isSurfaceSimReported, assignmentFile, assignmentParentDirPath,
 					assignmentName, isMultipleFiles, isCommonCodeAllowed, additionalKeywordsPath, filesToBeDeleted);
 		else if (isSurfaceSimReported)
 			// otherwise, if surface comparison is checked, use it as the main measurement
-			SurfaceComparer.doSurfaceComparison(assignmentPath, progLang, humanLang, simThreshold, minMatchingLength,
+			SurfaceComparer.doSurfaceComparison(assignmentPath, progLang, humanLang, simThreshold, minMatchingLength, maxPairs,
 					templateDirPath, assignmentFile, assignmentParentDirPath, assignmentName, isMultipleFiles,
 					isCommonCodeAllowed, additionalKeywordsPath, filesToBeDeleted);
 
