@@ -4,6 +4,8 @@
 
 Type III similarity is measured via [JPlag](https://github.com/jplag/jplag) version 2.12.1 (which is the latest at the development stage of this tool). Type II similarity is measured via [STRANGE](https://github.com/oscarkarnalim/strange) version 1.1 published in [IEEE Access](https://doi.org/10.1109/ACCESS.2021.3073703). Type I similarity is measured by simplified STRANGE. **You can see this guideline in Indonesian at the end of this file.** 
 
+**For large submissions, it is recommended to use [Scalable STRANGE or SSTRANGE](https://github.com/oscarkarnalim/SSTRANGE) instead.**
+
 **Upon acceptance of the relevant publication, CSTRANGE has been updated with a more recent JPlag (v 3.0.0), better JPlag report formatting, and more efficient STRANGE reporting mechanism**
 
 Unlike many existing tools, CSTRANGE is applicable for any assessments, even the trivial and the strongly directed ones. If many submissions share the same similarity, the instructor can rely on shallower levels of similarity to identify the suspicious ones. The instructor is also able to prioritise submissions at which some similarities tend to be verbatim. The tool sorts similar submissions based on the combination of three types of similarities.
