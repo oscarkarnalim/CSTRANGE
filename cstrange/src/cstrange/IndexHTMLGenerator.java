@@ -141,7 +141,7 @@ public class IndexHTMLGenerator {
 		return "<ol>\r\n"
 				+ "				<li>Laman HTML ini dibuat dengan CSTRANGE, sebuah kakas ramah pengguna untuk mengobservasi kesamaan antar tugas dengan tiga level kesamaan: pseudo-semantic, syntactic, dan surface.</li>\r\n"
 				+ "<br />				<li>CSTRANGE merupakan ekspansi dari <b>STRANGE</b> (<b>S</b>imilarity <b>TR</b>acker in <b>A</b>cademia with <b>N</b>atural lan<b>G</b>uage <b>E</b>xplanation), which details can be seen in <b><u><a href = \"https://github.com/oscarkarnalim/strange\">the Github page</a></u></b> or <b><u><a href=\"https://ieeexplore.ieee.org/document/9405994\">the corresponding publication</a></u></b></li>\r\n"
-				+ "<br />				<li> CSTRANGE dapat diunduh dari <b><u><a href=\"#\">repositori ini</a></u></b>.\r\n"
+				+ "<br />				<li> CSTRANGE dapat diunduh dari <b><u><a href=\"https://github.com/oscarkarnalim/cstrange\">repositori ini</a></u></b>.\r\n"
 				+ "					Selain itu, kamu dapat mengirimkan email permintaan ke <b>Oscar Karnalim</b> (<b><u><a href=\"mailto:oscar.karnalim@uon.edu.au\">email ini</a></u></b> atau <b><u><a href=\"mailto:oscar.karnalim@it.maranatha.edu\">email itu</a></u></b>).</li>\r\n"
 				+ "<br />				<li>Jika kamu ingin mensitasi program ini (atau bagian-bagiannya), mohon sitasi <b><u><a href=\"#\">paper ini</a></u></b>. </li>\r\n"
 				+ "				</ol>";

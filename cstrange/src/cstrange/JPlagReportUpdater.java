@@ -299,12 +299,12 @@ public class JPlagReportUpdater {
 						JavaHtmlGenerator.generateHtmlForCSTRANGE(code1.getAbsolutePath(), code2.getAbsolutePath(),
 								dirname1, dirname2, embeddedSimTagsForSyntactic, MainFrame.pairTemplatePath,
 								jplagDirPath + File.separator + syntacticFileName, minMatchLength, humanLang, jplagTag,
-								additionalKeywords, true);
+								additionalKeywords, true, null);
 					} else if (progLang.equals("py")) {
 						PythonHtmlGenerator.generateHtmlForCSTRANGE(code1.getAbsolutePath(), code2.getAbsolutePath(),
 								dirname1, dirname2, embeddedSimTagsForSyntactic, MainFrame.pairTemplatePath,
 								jplagDirPath + File.separator + syntacticFileName, minMatchLength, humanLang, jplagTag,
-								additionalKeywords, true);
+								additionalKeywords, true, null);
 					}
 				}
 
@@ -314,12 +314,12 @@ public class JPlagReportUpdater {
 						JavaHtmlGenerator.generateHtmlForCSTRANGE(code1.getAbsolutePath(), code2.getAbsolutePath(),
 								dirname1, dirname2, embeddedSimTagsForSurface, MainFrame.pairTemplatePath,
 								jplagDirPath + File.separator + surfaceFileName, minMatchLength, humanLang, jplagTag,
-								additionalKeywords, false);
+								additionalKeywords, false, null);
 					} else if (progLang.equals("py")) {
 						PythonHtmlGenerator.generateHtmlForCSTRANGE(code1.getAbsolutePath(), code2.getAbsolutePath(),
 								dirname1, dirname2, embeddedSimTagsForSurface, MainFrame.pairTemplatePath,
 								jplagDirPath + File.separator + surfaceFileName, minMatchLength, humanLang, jplagTag,
-								additionalKeywords, false);
+								additionalKeywords, false, null);
 					}
 				}
 

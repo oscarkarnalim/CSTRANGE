@@ -10,8 +10,11 @@ import p3.feedbackgenerator.language.java.JavaFeedbackGenerator;
 import p3.feedbackgenerator.language.java.JavaHtmlGenerator;
 import p3.feedbackgenerator.language.python.PythonFeedbackGenerator;
 import p3.feedbackgenerator.language.python.PythonHtmlGenerator;
+import p3.feedbackgenerator.message.FeedbackMessageGenerator;
 import p3.feedbackgenerator.token.FeedbackToken;
 import support.AdditionalKeywordsManager;
+import support.stringmatching.GSTMatchTuple;
+import support.stringmatching.GreedyStringTiling;
 
 public class SyntacticComparer {
 	public static void doSyntacticComparison(String assignmentPath, String progLang, String humanLang, int simThreshold,
@@ -93,16 +96,27 @@ public class SyntacticComparer {
 
 					String dirname2 = assignments[j].getName();
 					File code2 = Comparer.getCode(assignments[j], progLang);
+					
+					ArrayList<FeedbackToken> tokenString1 = tokenStringsSyntactic.get(i);
+					ArrayList<FeedbackToken> tokenString2 = tokenStringsSyntactic.get(j);
+					
+					// get matched tiles with RKRGST
+					ArrayList<GSTMatchTuple> simTuples = FeedbackMessageGenerator.generateMatchedTuples(tokenString1, tokenString2,
+							minMatchLength);
 
 					// calculating for syntactic
-					int syntacticSimDegree = STRANGEPairGenerator.getSTRANGESim(tokenStringsSyntactic.get(i),
-							tokenStringsSyntactic.get(j), minMatchLength);
+					int syntacticSimDegree = (int) (GreedyStringTiling.calcAverageSimilarity(simTuples)*100);
 
 					if (syntacticSimDegree >= simThreshold) {
-						// add the comparison pair
-						codePairs.add(new ExpandedComparisonPairTuple(code1.getAbsolutePath(), code2.getAbsolutePath(),
+						// create an object
+						ExpandedComparisonPairTuple e = new ExpandedComparisonPairTuple(code1.getAbsolutePath(), code2.getAbsolutePath(),
 								dirname1, dirname2, new double[] { -1, syntacticSimDegree, -1 }, new String[] {},
-								syntacticSimDegree));
+								syntacticSimDegree);
+						// set the matches
+						e.setMatches(simTuples);
+						
+						// add the comparison pair
+						codePairs.add(e);
 					}
 				}
 			}
@@ -136,15 +150,18 @@ public class SyntacticComparer {
 
 				if (isSurface) {
 					// calculate surface sim
-					System.out.println("HAHAHAHA");
 					// generate token string
 					ArrayList<FeedbackToken> tokenString1 = STRANGEPairGenerator.getTokenString(ecpt.getCodePath1(),
 							progLang);
 					ArrayList<FeedbackToken> tokenString2 = STRANGEPairGenerator.getTokenString(ecpt.getCodePath2(),
 							progLang);
-					// calculate surface sim
-					ecpt.getSimResults()[2] = STRANGEPairGenerator.getSTRANGESim(tokenString1, tokenString2,
+					
+					// get matched tiles with RKRGST
+					ArrayList<GSTMatchTuple> simTuples = FeedbackMessageGenerator.generateMatchedTuples(tokenString1, tokenString2,
 							minMatchLength);
+					
+					// calculate surface sim
+					ecpt.getSimResults()[2] = (int) (GreedyStringTiling.calcAverageSimilarity(simTuples)*100);
 
 					// generate the embedded sim tags for surface
 					embeddedSimTagsForSyntactic = embeddedSimTagsForSyntactic + "				<a href=\""
@@ -160,27 +177,29 @@ public class SyntacticComparer {
 						JavaHtmlGenerator.generateHtmlForCSTRANGE(ecpt.getCodePath1(), ecpt.getCodePath2(),
 								ecpt.getAssignmentName1(), ecpt.getAssignmentName2(), embeddedSimTagsForSurface,
 								MainFrame.pairTemplatePath, resultPath + File.separator + surfaceFileName,
-								minMatchLength, humanLang, "", additionalKeywords, false);
+								minMatchLength, humanLang, "", additionalKeywords, false, simTuples);
 					} else if (progLang.equals("py")) {
 						PythonHtmlGenerator.generateHtmlForCSTRANGE(ecpt.getCodePath1(), ecpt.getCodePath2(),
 								ecpt.getAssignmentName1(), ecpt.getAssignmentName2(), embeddedSimTagsForSurface,
 								MainFrame.pairTemplatePath, resultPath + File.separator + surfaceFileName,
-								minMatchLength, humanLang, "", additionalKeywords, false);
+								minMatchLength, humanLang, "", additionalKeywords, false, simTuples);
 					}
 				}
+				
+				
 
-				// generate STRANGE observation pages. Should be here as we need to generate
-				// html path for surface
+				// generate STRANGE observation pages for syntactic. Should be here as we need to generate
+				// html path for surface first
 				if (progLang.equals("java")) {
 					JavaHtmlGenerator.generateHtmlForCSTRANGE(ecpt.getCodePath1(), ecpt.getCodePath2(),
 							ecpt.getAssignmentName1(), ecpt.getAssignmentName2(), embeddedSimTagsForSyntactic,
 							MainFrame.pairTemplatePath, resultPath + File.separator + syntacticFileName, minMatchLength,
-							humanLang, "", additionalKeywords, true);
+							humanLang, "", additionalKeywords, true, ecpt.getMatches());
 				} else if (progLang.equals("py")) {
 					PythonHtmlGenerator.generateHtmlForCSTRANGE(ecpt.getCodePath1(), ecpt.getCodePath2(),
 							ecpt.getAssignmentName1(), ecpt.getAssignmentName2(), embeddedSimTagsForSyntactic,
 							MainFrame.pairTemplatePath, resultPath + File.separator + syntacticFileName, minMatchLength,
-							humanLang, "", additionalKeywords, true);
+							humanLang, "", additionalKeywords, true, ecpt.getMatches());
 				}
 
 				// set html paths

@@ -9,8 +9,11 @@ import p3.feedbackgenerator.language.java.JavaFeedbackGenerator;
 import p3.feedbackgenerator.language.java.JavaHtmlGenerator;
 import p3.feedbackgenerator.language.python.PythonFeedbackGenerator;
 import p3.feedbackgenerator.language.python.PythonHtmlGenerator;
+import p3.feedbackgenerator.message.FeedbackMessageGenerator;
 import p3.feedbackgenerator.token.FeedbackToken;
 import support.AdditionalKeywordsManager;
+import support.stringmatching.GSTMatchTuple;
+import support.stringmatching.GreedyStringTiling;
 
 public class SurfaceComparer {
 	public static void doSurfaceComparison(String assignmentPath, String progLang, String humanLang, int simThreshold,
@@ -89,16 +92,27 @@ public class SurfaceComparer {
 
 					String dirname2 = assignments[j].getName();
 					File code2 = Comparer.getCode(assignments[j], progLang);
+					
+					ArrayList<FeedbackToken> tokenString1 = tokenStringsSurface.get(i);
+					ArrayList<FeedbackToken> tokenString2 = tokenStringsSurface.get(j);
+					
+					// get matched tiles with RKRGST
+					ArrayList<GSTMatchTuple> simTuples = FeedbackMessageGenerator.generateMatchedTuples(tokenString1, tokenString2,
+							minMatchLength);
 
 					// calculating for surface
-					int surfaceSimDegree = STRANGEPairGenerator.getSTRANGESim(tokenStringsSurface.get(i),
-							tokenStringsSurface.get(j), minMatchLength);
+					int surfaceSimDegree = (int) (GreedyStringTiling.calcAverageSimilarity(simTuples)*100);
 
 					if (surfaceSimDegree >= simThreshold) {
-						// add the comparison pair
-						codePairs.add(new ExpandedComparisonPairTuple(code1.getAbsolutePath(), code2.getAbsolutePath(),
+						ExpandedComparisonPairTuple e = new ExpandedComparisonPairTuple(code1.getAbsolutePath(), code2.getAbsolutePath(),
 								dirname1, dirname2, new double[] { -1, -1, surfaceSimDegree}, new String[] {},
-								surfaceSimDegree));
+								surfaceSimDegree);
+						
+						// set the matches
+						e.setMatches(simTuples);
+						
+						// add the comparison pair
+						codePairs.add(e);
 					}
 				}
 			}
@@ -127,12 +141,12 @@ public class SurfaceComparer {
 					JavaHtmlGenerator.generateHtmlForCSTRANGE(ecpt.getCodePath1(), ecpt.getCodePath2(),
 							ecpt.getAssignmentName1(), ecpt.getAssignmentName2(), embeddedSimTagsForSurface,
 							MainFrame.pairTemplatePath, resultPath + File.separator + surfaceFileName, minMatchLength,
-							humanLang, "", additionalKeywords, false);
+							humanLang, "", additionalKeywords, false, ecpt.getMatches());
 				} else if (progLang.equals("py")) {
 					PythonHtmlGenerator.generateHtmlForCSTRANGE(ecpt.getCodePath1(), ecpt.getCodePath2(),
 							ecpt.getAssignmentName1(), ecpt.getAssignmentName2(), embeddedSimTagsForSurface,
 							MainFrame.pairTemplatePath, resultPath + File.separator + surfaceFileName, minMatchLength,
-							humanLang, "", additionalKeywords, false);
+							humanLang, "", additionalKeywords, false, ecpt.getMatches());
 				}
 
 				// set html paths

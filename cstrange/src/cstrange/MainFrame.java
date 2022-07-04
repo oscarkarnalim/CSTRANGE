@@ -463,13 +463,14 @@ public class MainFrame extends JFrame {
 
 		ArrayList<File> filesToBeDeleted = new ArrayList<File>();
 
-//		PrintStream originalStream = System.err;
-//		PrintStream dummyStream = new PrintStream(new OutputStream() {
-//			public void write(int b) {
-//				// NO-OP
-//			}
-//		});
-//		System.setErr(dummyStream);
+		// to silent all parsing warnings
+		PrintStream originalStream = System.err;
+		PrintStream dummyStream = new PrintStream(new OutputStream() {
+			public void write(int b) {
+				// NO-OP
+			}
+		});
+		System.setErr(dummyStream);
 
 		File assignmentFile = new File(assignmentPath);
 		String assignmentParentDirPath = assignmentFile.getParentFile().getAbsolutePath();
