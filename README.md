@@ -1,6 +1,6 @@
 # CSTRANGE: Comprehensive Similarity TRacker in Academia with Natural lanGuage Explanation
 
-**CSTRANGE** \(Comprehensive Similarity TRacker in Academia with Natural lanGuage Explanation\) is a comprehensive tool to observe similarities among programming submissions with three levels of similarity: pseudo-semantic (type III code clone), syntactic (type II code clone), and surface (type I code clone).
+**CSTRANGE** \(Comprehensive Similarity TRacker in Academia with Natural lanGuage Explanation\) is a comprehensive tool to observe similarities among programming submissions with three levels of similarity: pseudo-semantic (type III code clone), syntactic (type II code clone), and surface (type I code clone). Further details can be seen in [the corresponding paper]{https://onlinelibrary.wiley.com/doi/full/10.1002/cae.22553} published in Wiley's Computer Applications in Engineering Education (CAE).
 
 Type III similarity is measured via [JPlag](https://github.com/jplag/jplag) version 2.12.1 (which is the latest at the development stage of this tool). Type II similarity is measured via [STRANGE](https://github.com/oscarkarnalim/strange) version 1.1 published in [IEEE Access](https://doi.org/10.1109/ACCESS.2021.3073703). Type I similarity is measured by simplified STRANGE. **You can see this guideline in Indonesian at the end of this file.** 
 
@@ -65,15 +65,17 @@ The instructor can select reported types of similarity. If the submission langua
 This tool uses [STRANGE](https://github.com/oscarkarnalim/strange) to measure type II and type I similarities, [JPlag](https://github.com/jplag/jplag) to measure type III similarity, [ANTLR](https://www.antlr.org/) to tokenise given submissions, [Google Prettify](https://github.com/google/code-prettify) to display source code, and [JSoup](https://jsoup.org/) to parse JPlag's HTML pages. 
 
 # Indonesian Guideline for CSTRANGE
-**CSTRANGE** \(Comprehensive Similarity TRacker in Academia with Natural lanGuage Explanation\) adalah sebuah kakas komprehensif untuk observasi kesamaan tugas pemrograman berdasarkan tiga level kesamaan: pseudo-semantic (tipe III klasifikasi code clone), syntactic (tipe II klasifikasi code clone), dan surface (tipe I klasifikasi code clone). Tipe III diukur menggunakan [JPlag](https://github.com/jplag/jplag) versi 2.12.1 (terbaru pada saat pengembangan kakas ini). Tipe II diukur menggunakan [STRANGE](https://github.com/oscarkarnalim/strange) versi 1.1 yang dipublikasikan di [IEEE Access](https://doi.org/10.1109/ACCESS.2021.3073703). Tipe I diukur menggunakan STRANGE yang disimplifikasi. **You can see this guideline in English at the beginning of the file.** 
+**CSTRANGE** \(Comprehensive Similarity TRacker in Academia with Natural lanGuage Explanation\) adalah sebuah kakas komprehensif untuk observasi kesamaan tugas pemrograman berdasarkan tiga level kesamaan: pseudo-semantic (tipe III klasifikasi code clone), syntactic (tipe II klasifikasi code clone), dan surface (tipe I klasifikasi code clone). Detil lebih jauh dapat dilihat di [artikel terkait]{https://onlinelibrary.wiley.com/doi/full/10.1002/cae.22553} yang dipublikasikan di Wiley's Computer Applications in Engineering Education (CAE).
+
+Tipe III diukur menggunakan [JPlag](https://github.com/jplag/jplag) versi 2.12.1 (terbaru pada saat pengembangan kakas ini). Tipe II diukur menggunakan [STRANGE](https://github.com/oscarkarnalim/strange) versi 1.1 yang dipublikasikan di [IEEE Access](https://doi.org/10.1109/ACCESS.2021.3073703). Tipe I diukur menggunakan STRANGE yang disimplifikasi. **You can see this guideline in English at the beginning of the file.** 
+
+**Setelah penerimaan untuk publikasi, CSTRANGE sudah diupdate dengan JPlag versi yang lebih baru (v 3.0.0), format laporan JPlag yang lebih baik, dan mekanisme pelaporan STRANGE yang lebih efisien. Untuk tugas berukuran besar, anda direkomendasikan untuk menggunakan [Scalable STRANGE or SSTRANGE](https://github.com/oscarkarnalim/SSTRANGE).**
 
 Berbeda dengan kakas-kakas lainnya, CSTRANGE dapat digunakan untuk tugas apapun, bahkan yang mudah atau penyelesaiannya sangat diarahkan. Jika banyak hasil pekerjaan memiliki nilai kesamaan yang sama, instruktur dapat menggunakan level kesamaan yang lebih dangkal untuk mengindentifikasi hasil pekerjaan yang mencurigakan. Instruktur juga dapat memprioritaskan hasil pekerjaan yang sebagian kesamaannya cenderung sama persis. Kakas ini mengurutkan hasil pekerjaan berdasarkan kombinasi nilai dari tiga tipe kesamaan.
 
 CSTRANGE diekspansi dari STRANGE dengan memperhitungkan tiga tipe kesamaan, mengoptimasi algoritma perbandingan, dan menambahkan antarmuka pengguna. CSTRANGE dapat mengabaikan kode template dan kode umum. Kode template diabaikan dengan teknik yang diadaptasi dari STRANGE sedangkan kode umum diabaikan dengan teknik yang diadaptasi dari [Common Code Segment Selector](https://github.com/oscarkarnalim/c2s2) yang dipublikasikan di [52nd ACM Technical Symposium on Computer Science Education (SIGCSE 2021)](https://dl.acm.org/doi/10.1145/3408877.3432436).
 
 Pada saat ini, kakas menerima tugas pemrograman dalam bahasa Java dan Python. Kakas ini juga dapat berperan sebagai antarmuka sederhana untuk JPlag, memungkinkan lima bahasa tambahan untuk tugas: C, C++, C#, and Text.
-
-**Note :** Mengingat JPlag yang digunakan pada kakas ini tidak didesain khusus sebagai library pihak ketiga, CSTRANGE bisa berhenti berjalan jika JPlag tidak berhasil mengenali dua atau lebih tugas siswa atau minimum matching length nya terlalu besar. Jika itu terjadi, mohon pastikan bahwa paling tidak ada dua tugas siswa dan/atau menurunkan nilai minimum matching length.
 
 ## Masukan 
 ### Assignment path (lokasi tugas)
