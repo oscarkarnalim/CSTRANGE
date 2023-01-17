@@ -29,7 +29,7 @@ Currently, the tool supports Java and Python submissions. The tool can also act 
 </p>
 
 ## Input 
-### Assignment path
+### Assessment path
 This refers to a directory containing student submissions as submission files, sub-directories or zip files.
 
 ### Submission type
@@ -78,7 +78,7 @@ CSTRANGE diekspansi dari STRANGE dengan memperhitungkan tiga tipe kesamaan, meng
 Pada saat ini, kakas menerima tugas pemrograman dalam bahasa Java dan Python. Kakas ini juga dapat berperan sebagai antarmuka sederhana untuk JPlag, memungkinkan lima bahasa tambahan untuk tugas: C, C++, C#, and Text.
 
 ## Masukan 
-### Assignment path (lokasi tugas)
+### Assessment path (lokasi tugas)
 Ini mengarah pada sebuah direktori berisi kumpulan hasil pekerjaan dalam bentuk kumpulan file, sub-direktori, atau zip.
 
 ### Submission type (jenis hasil pekerjaan yang dikumpulkan)
